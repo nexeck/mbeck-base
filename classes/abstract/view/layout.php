@@ -1,13 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
- /**
- * Created by JetBrains PhpStorm.
- * User: marcel.beck
- * Date: 08.04.11
- * Time: 15:39
- * Contains methods useful to views that use layouts
- */
-abstract class Abstract_View_Layout extends Kohana_Kostache_Layout {
 
+abstract class Abstract_View_Layout extends Kohana_Kostache_Layout {
 
 	/**
 	 * @var	string	character set of input and output
@@ -52,7 +45,7 @@ abstract class Abstract_View_Layout extends Kohana_Kostache_Layout {
 	 * @return string
 	 */
 	public function base() {
-		return url::base(FALSE, TRUE);
+		return url::base(false, true);
 	}
 
 	/**
@@ -101,11 +94,11 @@ abstract class Abstract_View_Layout extends Kohana_Kostache_Layout {
 	}
 
 	/**
-	 * Notizen/Infos
+	 * Hints
 	 *
 	 * @return array
 	 */
-	public function notices() {
+	public function hints() {
 		$data = array();
 
 		if (($messages = Hint::get(NULL, NULL, TRUE)) !== NULL) {
@@ -156,7 +149,8 @@ abstract class Abstract_View_Layout extends Kohana_Kostache_Layout {
 	public function render() {
 		$this->charset = Kohana::$charset;
 		$this->lang = I18n::$lang;
-		$this->production = Kohana::$environment <= Kohana::STAGING;
+		$this->production = Kohana::$environment === Kohana::PRODUCTION;
 		return parent::render();
 	}
+
 } // End Abstract_View_Layout

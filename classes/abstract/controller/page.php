@@ -6,17 +6,12 @@
  * Time: 11:48
  */
 
-abstract class Abstract_Controller_Page extends Abstract_Controller_Base {
+abstract class Abstract_Controller_Page extends Abstract_Controller_Website {
 
 	protected function _request_view()
 	{
-		// Set default title and content views (path only)
-		$directory = $this->request->directory();
-		$controller = $this->request->controller();
-		$action = $this->request->action();
-
 		// Removes leading slash if this is not a subdirectory controller
-		$controller_path = trim($directory . '/' . $controller . '/' . $action, '/');
+		$controller_path = trim($this->directory . '/' . $this->controller . '/' . $this->action, '/');
 
 		try
 		{
@@ -28,7 +23,7 @@ abstract class Abstract_Controller_Page extends Abstract_Controller_Base {
 			 * The View class could not be found, so the controller action is
 			 * repsonsible for making sure this is resolved.
 			 */
-			$view = NULL;
+			$view = null;
 		}
 
 		return $view;

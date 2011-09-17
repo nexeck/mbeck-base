@@ -6,7 +6,7 @@
  * Time: 11:47
  */
 
-abstract class Abstract_Controller_Base extends Controller {
+abstract class Abstract_Controller_Website extends Controller {
 	/**
 	 * @var object the content View object
 	 */
@@ -15,39 +15,39 @@ abstract class Abstract_Controller_Base extends Controller {
 	/**
 	 * @var	bool	auto render template
 	 **/
-	public $auto_render = TRUE;
+	protected $auto_render = true;
 
 	/**
 	 * Controls access for the whole controller, if not set to FALSE we will only allow user roles specified
 	 *
 	 * Can be set to a string or an array, for example array('login', 'admin') or 'login'
 	 */
-	public $auth_required = FALSE;
+	protected $auth_required = false;
 
 	/**
 	 * @var bool is ajax Request
 	 */
-	public $is_ajax = FALSE;
+	protected $is_ajax = false;
 
 	/**
 	 * @var bool is internal Request
 	 */
-	public $is_internal = FALSE;
+	protected $is_internal = false;
 
 	/**
 	 * @var Directory
 	 */
-	public $directory;
+	protected $directory;
 
 	/**
 	 * @var Controller
 	 */
-	public $controller;
+	protected $controller;
 
 	/**
 	 * @var Action
 	 */
-	public $action;
+	protected $action;
 
 	public function before()
 	{
@@ -69,16 +69,21 @@ abstract class Abstract_Controller_Base extends Controller {
 	 */
 	public function after()
 	{
-		// If content is NULL, then there is no View to render
-		if ($this->view === NULL)
-			throw new Kohana_View_Exception('There was no View created for this request.');
+		if ($this->auto_render === true) {
+			// If content is NULL, then there is no View to render
+			if ($this->view === null)
+				throw new Kohana_View_Exception('There was no View created for this request.');
 
-		if (($this->is_internal === TRUE) OR ($this->is_ajax === TRUE))
-		{
-			$this->view->render_layout = FALSE;
+			if (($this->is_internal === true) or ($this->is_ajax === true))
+			{
+				$this->view->render_layout = false;
+			}
+			$this->response->body($this->view);
 		}
-		$this->response->body($this->view);
+
+		parent::after();
 	}
 
 	abstract protected function _request_view();
+
 } // Abstract_Controller_Base
