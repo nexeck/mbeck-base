@@ -1,5 +1,11 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+/**
+ * Abstract View Layout
+ *
+ * @author Marcel Beck <fo3nik5@gmail.com>
+ */
+
 abstract class Abstract_View_Layout extends Kohana_Kostache_Layout {
 
 	/**
@@ -44,7 +50,8 @@ abstract class Abstract_View_Layout extends Kohana_Kostache_Layout {
 	 *
 	 * @return string
 	 */
-	public function base() {
+	public function base()
+	{
 		return url::base(false, true);
 	}
 
@@ -57,30 +64,49 @@ abstract class Abstract_View_Layout extends Kohana_Kostache_Layout {
 	 * @param	 string a pipe-separated list of strings
 	 * @return	string
 	 */
-	public function alternate() {
-		return function($string) {
+	public function alternate()
+	{
+		return function($string)
+		{
 			return call_user_func_array('Text::alternate', explode('|', $string));
+		};
+	}
+
+	/**
+	 * Lambda function to translate strings
+	 *
+	 * @param string
+	 * @return string
+	 */
+	public function i18n()
+	{
+		return function($string)
+		{
+			return __($string);
 		};
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function logged_in() {
+	public function logged_in()
+	{
 		return Auth::instance()->logged_in();
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function is_admin() {
+	public function is_admin()
+	{
 		return Auth::instance()->logged_in('admin');
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function auth_get_username() {
+	public function auth_get_username()
+	{
 		return Auth::instance()->get_user()->username;
 	}
 
@@ -89,7 +115,8 @@ abstract class Abstract_View_Layout extends Kohana_Kostache_Layout {
 	 *
 	 * @return string
 	 */
-	public function title() {
+	public function title()
+	{
 		return __($this->title);
 	}
 
@@ -98,10 +125,12 @@ abstract class Abstract_View_Layout extends Kohana_Kostache_Layout {
 	 *
 	 * @return array
 	 */
-	public function hints() {
+	public function hints()
+	{
 		$data = array();
 
-		if (($messages = Hint::get(NULL, NULL, TRUE)) !== NULL) {
+		if (($messages = Hint::get(null, null, true)) !== null)
+		{
 			foreach ($messages as $message)
 			{
 				$data[] = array
@@ -119,7 +148,8 @@ abstract class Abstract_View_Layout extends Kohana_Kostache_Layout {
 	 *
 	 * @return string|View
 	 */
-	public function profiler() {
+	public function profiler()
+	{
 		return Kohana::$environment > Kohana::STAGING ? View::factory('profiler/stats') : '';
 	}
 
@@ -128,7 +158,8 @@ abstract class Abstract_View_Layout extends Kohana_Kostache_Layout {
 	 *
 	 * @return mixed
 	 */
-	public function assets_css() {
+	public function assets_css()
+	{
 		return Assets::css();
 	}
 
@@ -137,7 +168,8 @@ abstract class Abstract_View_Layout extends Kohana_Kostache_Layout {
 	 *
 	 * @return mixed
 	 */
-	public function assets_js() {
+	public function assets_js()
+	{
 		return Assets::js();
 	}
 
@@ -146,11 +178,26 @@ abstract class Abstract_View_Layout extends Kohana_Kostache_Layout {
 	 *
 	 * @return	string
 	 */
-	public function render() {
+	public function render()
+	{
 		$this->charset = Kohana::$charset;
 		$this->lang = I18n::$lang;
 		$this->production = Kohana::$environment === Kohana::PRODUCTION;
-		return parent::render();
+		if (Kohana::$profiling === true)
+		{
+			// Start a new benchmark
+			$benchmark = Profiler::start('Layout', __FUNCTION__);
+		}
+
+		$rendered = parent::render();
+
+		if (isset($benchmark))
+		{
+			// Stop the benchmark
+			Profiler::stop($benchmark);
+		}
+
+		return $rendered;
 	}
 
 } // End Abstract_View_Layout
