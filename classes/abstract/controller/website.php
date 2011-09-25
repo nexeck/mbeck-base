@@ -1,16 +1,16 @@
-<?php
+<?php defined('SYSPATH') or die('No direct access allowed.');
+
 /**
- * @package
+ * Abstract Controller Website
+ *
  * @author Marcel Beck <fo3nik5@gmail.com>
- * Date: 17.07.11
- * Time: 11:47
  */
 
 abstract class Abstract_Controller_Website extends Controller {
 	/**
 	 * @var object the content View object
 	 */
-	public $view;
+	public $view = null;
 
 	/**
 	 * @var	bool	auto render template
@@ -69,21 +69,38 @@ abstract class Abstract_Controller_Website extends Controller {
 	 */
 	public function after()
 	{
-		if ($this->auto_render === true) {
-			// If content is NULL, then there is no View to render
-			if ($this->view === null)
-				throw new Kohana_View_Exception('There was no View created for this request.');
-
-			if (($this->is_internal === true) or ($this->is_ajax === true))
+		if ($this->auto_render === true)
+		{
+			if ($this->view !== null)
 			{
-				$this->view->render_layout = false;
+				if (($this->is_internal === true) or ($this->is_ajax === true))
+				{
+					$this->view->render_layout = false;
+				}
+				$this->response->body($this->view);
 			}
-			$this->response->body($this->view);
 		}
 
 		parent::after();
 	}
 
-	abstract protected function _request_view();
+	/**
+	 * Creates the View
+	 *
+	 * @return Kostache|null
+	 */
+	protected function _request_view()
+	{
+		$directory = $this->directory ? $this->directory . '_' : '';
 
-} // Abstract_Controller_Base
+		$view_name = 'View_' . $directory . $this->controller . '_' . $this->action;
+
+		if (Kohana::find_file('classes', strtolower(str_replace('_', '/', $view_name))) === false)
+		{
+			return null;
+		}
+
+		return new $view_name;
+	}
+
+} // Abstract_Controller_Website
