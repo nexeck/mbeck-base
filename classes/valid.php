@@ -1,5 +1,11 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+/**
+ * Valid
+ *
+ * @author Marcel Beck <fo3nik5@gmail.com>
+ */
+
 class Valid extends Kohana_Valid {
 
 	/**
@@ -66,13 +72,13 @@ class Valid extends Kohana_Valid {
 	}
 
 	/**
-	 * Größer Als Methode
+	 * Checks if the date $field1 is greater than the date $field2
 	 *
 	 * @static
 	 * @param $validation
 	 * @param $field1
 	 * @param $field2
-	 * @param $field2_name string  Wird für den Fehlertext benutzt, und sollte die Bezeichnung des Feld1 beinhalten
+	 * @param $field2_name string  Is needed for the Error Message, and should contain the Label/Name from $field2
 	 * @return bool
 	 */
 	public static function date_greater_than($validation, $field1, $field2, $field2_name)
@@ -85,13 +91,13 @@ class Valid extends Kohana_Valid {
 
 
 	/**
-	 * Kleiner Als Methode
+	 * Checks if the date $field1 is less than the date $field2
 	 *
 	 * @static
 	 * @param $validation
 	 * @param $field1
 	 * @param $field2
-	 * @param $field2_name string  Wird für den Fehlertext benutzt, und sollte die Bezeichnung des Feld1 beinhalten
+	 * @param $field2_name string  Is needed for the Error Message, and should contain the Label/Name from $field2
 	 * @return bool
 	 */
 	public static function date_less_than($validation, $field1, $field2, $field2_name)
