@@ -1,0 +1,34 @@
+<!doctype html>
+<html class="no-js" lang="{{lang}}">
+<head>
+	<meta charset="utf-8">
+
+	<title>{{titel}}</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+	<link rel="stylesheet" href="{{base}}css/style.css">
+</head>
+<body>
+
+<div id="container">
+	<header>
+		{{>header}}
+	</header>
+	<div id="main" role="main">
+		{{>hints}}
+		{{>content}}
+	</div>
+	<footer>
+		{{>footer}}
+	</footer>
+	{{^production}}
+		{{{profiler}}}
+	{{/production}}
+</div>
+<!--! end of #container -->
+
+</body>
+</html>

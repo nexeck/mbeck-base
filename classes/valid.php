@@ -11,12 +11,12 @@ class Valid extends Kohana_Valid {
 	/**
 	 * Checks if a phone number is valid.
 	 *
-	 * @param	 string	 phone number to check
+	 * @param $number
+	 * @param int $length
 	 * @return	boolean
 	 */
 	public static function phone($number, $length = 5)
 	{
-
 		// Remove all non-digit characters from the number
 		$number = preg_replace('/\D+/', '', $number);
 

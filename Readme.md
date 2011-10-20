@@ -20,6 +20,6 @@ Usefull Valid Functions
 
 ## Requirements
 
-- [Kostache Module](git@github.com:fo3-nik5/KOstache.git) 3.2/develop Branch (Mustache Version 0.8.0)
+- [Kostache Module](https://github.com/fo3-nik5/KOstache) 3.2/develop Branch (Mustache Version 0.8.0)
 - [Hint Module](https://github.com/fo3-nik5/kohana-hint)
 - PHP 5.3+
